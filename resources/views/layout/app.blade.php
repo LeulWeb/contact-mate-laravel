@@ -6,6 +6,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
+    @include('shared.nav')
     @if (session()->has('message'))
         <div class="p-4 text-white bg-green-500">
             <p>{{session('message')}}</p>
