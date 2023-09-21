@@ -39,17 +39,19 @@ class AuthController extends Controller
     }
     public function login()
     {
+
+        // dd(request()->all());
         $validatedInput = request()->validate([
             "email" => 'required|email',
             "password" => 'required'
         ]);
-
+       
         if(auth()->attempt($validatedInput)){
-            request()->session()->regenerate();
+            // request()->session()->regenerate();
             return redirect()->route('contacts.index');
         }
 
-        return redirect()->route('login')->withErrors(['password', "email or password is incorrect"]);
+        return redirect()->route('login')->withErrors(['password'=> "email or password is incorrect"]);
     }
 
     public function logout(){

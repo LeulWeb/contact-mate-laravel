@@ -15,7 +15,7 @@ class ContactController extends Controller
     public function index()
     {
         //this shows all the database
-        $contactList = Contact::latest();
+        $contactList = Contact::latest()->where('user_id',auth()->user()->id);
 
         if(request()->has('keyword')){
             $contactList = Contact::latest()->where('name','LIKE', request('keyword'));
@@ -40,7 +40,7 @@ class ContactController extends Controller
     public function store(Request $request)
     {
 
-        // dd(request()->all());
+        $userId= auth()->user()->id;
         $validate = request()->validate([
             "name"=>'required|min:3|max:20',
             "email"=> 'email|unique:contacts,email',
@@ -49,9 +49,10 @@ class ContactController extends Controller
             "profile"=>'image',
             "relation"=>'required',
             "birthday"=> 'date|nullable',
-            "note"=>'max:100',
+            "note"=>'max:100', 
         ]);
         // dd($validate);
+        $validate['user_id']= $userId;
 
        if(request()->has('profile')){
         $imageUrl = request()->file('profile')->store('contacts','public');
